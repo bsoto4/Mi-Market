@@ -1,7 +1,8 @@
 package mimarket.entity;
 
-public class Product {
+public class ProductTO {
     
+    private int saleId;
     private int productId;
     private String productName;
     private String productUnits;
@@ -9,10 +10,11 @@ public class Product {
     private double productPrice;
     private int productQuantity;
 
-    public Product() {
+    public ProductTO() {
     }
 
-    public Product(int productId, String productName, String productUnits, int productStock, double productPrice) {
+    public ProductTO(int saleId, int productId, String productName, String productUnits, int productStock, double productPrice) {
+        this.saleId = saleId;
         this.productId = productId;
         this.productName = productName;
         this.productUnits = productUnits;
@@ -20,6 +22,29 @@ public class Product {
         this.productPrice = productPrice;
     }
 
+    public ProductTO(String productName, String productUnits, int productStock, double productPrice) {
+        this.productName = productName;
+        this.productUnits = productUnits;
+        this.productStock = productStock;
+        this.productPrice = productPrice;
+    }
+
+    public ProductTO(int productId, String productName, String productUnits, int productStock, double productPrice) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productUnits = productUnits;
+        this.productStock = productStock;
+        this.productPrice = productPrice;
+    }
+
+    public int getSaleId() {
+        return saleId;
+    }
+
+    public void setSaleId(int saleId) {
+        this.saleId = saleId;
+    }    
+    
     public int getProductId() {
         return productId;
     }
@@ -67,10 +92,11 @@ public class Product {
     public void setProductQuantity(int productQuantity){
         this.productQuantity = productQuantity;
     }
-    
+
     @Override
     public String toString() {
-        return "Producto: " + productName + "   Cantidad: " + productQuantity + "    Precio: " + productPrice + "    Subtotal: " + productPrice*productQuantity;
+        return "ProductTO{" + "saleId=" + saleId + ", productId=" + productId + ", productName=" + productName + ", productUnits=" + productUnits + ", productStock=" + productStock + ", productPrice=" + productPrice + ", productQuantity=" + productQuantity + '}';
     }
+    
     
 }

@@ -1,0 +1,19 @@
+REPORTE DE VENTAS
+CUANTO DE DINERO SE MOVIO
+
+.DEL DIA
+.DEL MES
+
+.ENTRE FECHAS
+.POR USUARIO
+.POR PRODUCTO
+
+.REGISTRO DE VENTAS
+QUE PRODUCTOS SE VENDIERON DETALLADO
+.NUMERO DE VENTAS POR DIA Y MES
+
+//        this.getRootPane().setDefaultButton(btn_add);
+//        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+//                .put(KeyStroke.getKeyStroke("ENTER"), "none");
+//        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+//                .put(KeyStroke.getKeyStroke("released ENTER"), "press");
