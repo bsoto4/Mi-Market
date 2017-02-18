@@ -27,7 +27,8 @@ public class ViewAdmin extends javax.swing.JFrame {
     private File excel;
     private int contadorAccion;
     private boolean importExcel = false;
-
+    private DefaultTableModel tableModel;
+    
     public ViewAdmin(UserTO userTO) {
         initComponents();
         configureWindow();
@@ -294,8 +295,8 @@ public class ViewAdmin extends javax.swing.JFrame {
                                     .addComponent(tf_units)
                                     .addComponent(tf_price, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(tf_product, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tf_id, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tf_stock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(tf_stock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tf_id, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btn_update, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
@@ -313,9 +314,9 @@ public class ViewAdmin extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(lbl_add_and_update)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(30, 30, 30)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_product, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tf_product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -329,9 +330,9 @@ public class ViewAdmin extends javax.swing.JFrame {
                             .addComponent(tf_units, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbl_stock, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
+                            .addComponent(tf_stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_stock, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(btn_update, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -492,7 +493,7 @@ public class ViewAdmin extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_generate_pdf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_show_report, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -612,7 +613,9 @@ public class ViewAdmin extends javax.swing.JFrame {
 
     private void btn_import_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_import_productsActionPerformed
         if (importExcel) {
-            productBLL.importExcel(tbl_search);
+            if (productBLL.importExcel(tbl_search)) {
+                showErrorMessage("PRODUCTOS FUERON REGISTRADOS CON EXITO");
+            }
             getData();
             showProductTable(tbl_search, data);
             importExcel = false;
@@ -622,9 +625,14 @@ public class ViewAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_import_productsActionPerformed
 
     private void btn_cancel_importActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancel_importActionPerformed
-        importExcel = false;
-        getData();
-        showProductTable(tbl_search, data);
+        if (importExcel) {
+            importExcel = false;
+            getData();
+            showProductTable(tbl_search, data);
+        }else{
+            showErrorMessage("NO SELECCIONÓ NINGUN ARHIVO");
+        }
+
 
     }//GEN-LAST:event_btn_cancel_importActionPerformed
 
@@ -676,6 +684,7 @@ public class ViewAdmin extends javax.swing.JFrame {
         try {
             Font roboto_bold_title = Font.createFont(Font.TRUETYPE_FONT, new File("src\\mimarket\\resources\\fonts\\Roboto-Black.ttf")).deriveFont(40f);
             Font roboto_bold_subtitle = Font.createFont(Font.TRUETYPE_FONT, new File("src\\mimarket\\resources\\fonts\\Roboto-Bold.ttf")).deriveFont(25f);
+            Font roboto_bolt_description = Font.createFont(Font.TRUETYPE_FONT, new File("src\\mimarket\\resources\\fonts\\Roboto-Bold.ttf")).deriveFont(15f);
             Font roboto_regular = Font.createFont(Font.TRUETYPE_FONT, new File("src\\mimarket\\resources\\fonts\\Roboto-Medium.ttf")).deriveFont(14f);
             Font roboto_regular_big = Font.createFont(Font.TRUETYPE_FONT, new File("src\\mimarket\\resources\\fonts\\Roboto-Medium.ttf")).deriveFont(14f);
             Font roboto_regular_table = Font.createFont(Font.TRUETYPE_FONT, new File("src\\mimarket\\resources\\fonts\\Roboto-Medium.ttf")).deriveFont(12f);
@@ -685,7 +694,7 @@ public class ViewAdmin extends javax.swing.JFrame {
             lbl_subtitle.setFont(roboto_bold_subtitle);
 
             lbl_products_here.setFont(roboto_regular);
-            lbl_add_and_update.setFont(roboto_regular);
+            lbl_add_and_update.setFont(roboto_bolt_description);
             ta_instruction.setFont(roboto_regular);
             lbl_upload.setFont(roboto_regular);
             lbl_user.setFont(roboto_regular);
@@ -722,6 +731,7 @@ public class ViewAdmin extends javax.swing.JFrame {
         tbl_search.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("ENTER"), "none");
         setFonts();
         fileChooser = new JFileChooser();
+        tableModel = (DefaultTableModel) tbl_search.getModel();
     }
 
     private void configureData(UserTO userTO) {

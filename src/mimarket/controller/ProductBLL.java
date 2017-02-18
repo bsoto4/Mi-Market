@@ -49,8 +49,8 @@ public class ProductBLL {
     
     public boolean processExcel(File excel, JTable tbl_products) {
         Workbook workbook;
-        DefaultTableModel tableModel = new DefaultTableModel();
-        tbl_products.setModel(tableModel);
+        DefaultTableModel tableModel = (DefaultTableModel) tbl_products.getModel();
+        tableModel.setRowCount(0);
         try {
             workbook = WorkbookFactory.create(new FileInputStream(excel));
             Sheet hoja = workbook.getSheetAt(0);
@@ -65,29 +65,36 @@ public class ProductBLL {
                 while (iteColumna.hasNext()) {
                     indiceColumna++;
                     Cell celda = (Cell) iteColumna.next();
-                    if (indiceFila == 0) {
-                        tableModel.addColumn(celda.getStringCellValue());
-                    } else {
+                    if (indiceFila != 0) {
                         if (celda != null) {
-                            switch (celda.getCellType()) {
-                                case Cell.CELL_TYPE_NUMERIC:
-                                    listaColumna[indiceColumna] = celda.getNumericCellValue();
+                            switch (indiceColumna) {
+                                case 0:
+                                    listaColumna[indiceColumna] = (int) celda.getNumericCellValue();
                                     break;
-                                case Cell.CELL_TYPE_STRING:
-                                    listaColumna[indiceColumna] = celda.getStringCellValue();
+                                case 1:
+                                    listaColumna[indiceColumna] = (String) celda.getStringCellValue();
+                                    break;
+                                case 2:
+                                    listaColumna[indiceColumna] = (double) celda.getNumericCellValue();
+                                    break;
+                                case 3:
+                                    listaColumna[indiceColumna] = (String) celda.getStringCellValue();
+                                    break;
+                                case 4:
+                                    listaColumna[indiceColumna] = (int) celda.getNumericCellValue();
                                     break;
                                 default:
-                                    listaColumna[indiceColumna] = celda.getDateCellValue();
+                                    break;
                             }
                         }
                     }
+
                 }
                 if (indiceFila != 0) {
                     tableModel.addRow(listaColumna);
                 }
             }
         } catch (Exception e) {
-            System.out.println("EROR PAPUP UP UP UP U PU P UP U");
             return false;
         }
         return true;
@@ -98,11 +105,11 @@ public class ProductBLL {
         ArrayList<ProductTO> products = new ArrayList<>();
         for (int row = 0; row < rows; row++) {
             ProductTO product = new ProductTO();
-            product.setProductId((int) (double) tbl_products.getValueAt(row, 0));
+            product.setProductId((int) tbl_products.getValueAt(row, 0));
             product.setProductName((String) tbl_products.getValueAt(row, 1));
             product.setProductPrice((double) tbl_products.getValueAt(row, 2));
             product.setProductUnits((String) tbl_products.getValueAt(row, 3));
-            product.setProductStock((int) (double) tbl_products.getValueAt(row, 4));
+            product.setProductStock((int) tbl_products.getValueAt(row, 4));
             products.add(product);
         }
         return productDAO.importProducts(products);
